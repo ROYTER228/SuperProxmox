@@ -1,0 +1,7 @@
+{
+  "name": "superproxmox",
+  "version": "0.3.0",
+  "description": "Proxmox VE/PBS/PDM infrastructure management",
+  "skills_directory": "skills",
+  "agents_directory": "agents"
+}

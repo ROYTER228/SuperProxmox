@@ -1,0 +1,10 @@
+{
+  "name": "superproxmox",
+  "version": "0.3.0",
+  "description": "MCP Server + Skills + Agents for Proxmox VE/PBS/PDM",
+  "entryPoints": {
+    "skills": "../skills",
+    "agents": "../agents",
+    "hooks": "../hooks/hooks-cursor.json"
+  }
+}

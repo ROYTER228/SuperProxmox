@@ -1,0 +1,12 @@
+{
+  "name": "SuperProxmox",
+  "owner": {
+    "name": "SuperProxmox Contributors"
+  },
+  "plugins": [
+    {
+      "name": "superproxmox",
+      "source": "./"
+    }
+  ]
+}

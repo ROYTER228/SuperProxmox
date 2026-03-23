@@ -1,6 +1,6 @@
 {
   "name": "super-proxmox",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "MCP server + Skills + Agents for Proxmox VE/PBS/PDM — 141 tools, 11 skills, 6 agents",
   "main": "dist/index.js",
   "bin": {

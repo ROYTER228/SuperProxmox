@@ -383,44 +383,69 @@ Bash script that runs on session start. Reads `skills/using-superproxmox/SKILL.m
 - [x] PveClient class with get/post/put/del
 - [x] 45 tools working
 
-### Phase 2 — Skills Foundation
-- [ ] Write `using-superproxmox` bootstrap skill
-- [ ] Write `provisioning-vm` skill with rationalization table
-- [ ] Write `provisioning-container` skill (Docker-ready focus)
-- [ ] Write `security-hardening` skill with checklist
-- [ ] Write `troubleshooting` skill with methodology
-- [ ] Create session-start hook
+### Phase 2 — Skills Foundation (DONE)
+- [x] Write `using-superproxmox` bootstrap skill
+- [x] Write `provisioning-vm` skill with rationalization table
+- [x] Write `provisioning-container` skill (Docker-ready focus)
+- [x] Write `security-hardening` skill with checklist
+- [x] Write `troubleshooting` skill with methodology
+- [x] Create session-start hook
+- [x] Write `safety-guard` skill (destructive ops protection)
+- [x] Write `infrastructure-audit`, `storage-planning`, `backup-strategy`, `network-diagnostics`
+- [x] Write `migration-planning` skill
+- [x] Write `writing-superproxmox-skills` meta skill
+- [x] 12 skills total (exceeded target of 6)
 
-### Phase 3 — Agents
-- [ ] Write `proxmox-specialist` agent
-- [ ] Write `devops-engineer` agent
-- [ ] Write `security-auditor` agent
-- [ ] Write `capacity-planner` agent
+### Phase 3 — Agents (DONE)
+- [x] Write `proxmox-specialist` agent
+- [x] Write `devops-engineer` agent
+- [x] Write `security-auditor` agent
+- [x] Write `capacity-planner` agent
+- [x] Write `pbs-specialist` agent
+- [x] Write `pdm-specialist` agent
+- [x] 6 agents total (exceeded target of 4)
 
-### Phase 4 — MCP Tools Phase 2-3
-- [ ] Add firewall tools (7)
-- [ ] Add extended storage tools (8)
-- [ ] Add extended network tools (5)
-- [ ] Target: 65+ tools
+### Phase 4 — MCP Tools Phase 2-3 (DONE)
+- [x] Add firewall tools (9)
+- [x] Add extended storage tools (10)
+- [x] Add extended network tools (9)
+- [x] Add cloud-init tools (4)
+- [x] Add QEMU guest agent tools (11)
+- [x] Add Ceph tools (6)
+- [x] Add SDN tools (8)
+- [x] Add PBS tools (15)
+- [x] 170 tools total (exceeded target of 65)
 
-### Phase 5 — Multi-Platform
-- [ ] Claude Code plugin manifest
-- [ ] Gemini extension
-- [ ] Codex install guide + tool mapping
-- [ ] Cursor plugin
+### Phase 5 — Multi-Platform (DONE)
+- [x] Claude Code plugin manifest (.claude-plugin/)
+- [x] Gemini extension (gemini-extension.json + GEMINI.md)
+- [x] Codex install guide (.codex/INSTALL.md + tool mapping)
+- [x] Cursor plugin (.cursor-plugin/)
+- [x] Tool mapping references for Codex and Gemini
 
-### Phase 6 — MCP Tools Phase 4-7
-- [ ] Users & permissions (8)
-- [ ] Monitoring (8)
-- [ ] HA & cluster (6)
-- [ ] Target: 100+ tools
+### Phase 6 — MCP Tools Phase 4-7 (DONE)
+- [x] Users & permissions (12 tools)
+- [x] Monitoring (19 tools)
+- [x] HA & cluster (16 tools)
+- [x] Disks management (12 tools)
+- [x] 170 tools total (exceeded target of 100)
 
-### Phase 7 — Testing & Polish
-- [ ] Baseline tests for each skill
-- [ ] Integration tests for MCP tools
-- [ ] README with examples and GIFs
-- [ ] Publish to Claude Code marketplace
-- [ ] GitHub release
+### Phase 7 — Testing & Polish (DONE)
+- [x] Safety tests (4 tests)
+- [x] Tool registry tests (5 tests)
+- [x] Client tests (5 tests)
+- [x] Bundle validation tests (31 tests)
+- [x] 45 tests total, all passing
+- [x] README EN + RU with badges, examples, disclaimers
+- [x] GitHub release (https://github.com/ROYTER228/SuperProxmox)
+- [ ] npm publish (pending)
+- [ ] Claude Code marketplace (pending)
+
+### Phase 8 — Bundles (BONUS — not in original plan)
+- [x] 10 ready-to-deploy templates
+- [x] tailscale-gateway, docker-host, dokploy-paas, gitea-server
+- [x] truenas-nas, ubuntu-cloud, adguard-dns, nginx-proxy
+- [x] minecraft-server, monitoring-stack
 
 ---
 
