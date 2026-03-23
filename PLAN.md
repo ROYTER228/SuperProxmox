@@ -438,8 +438,8 @@ Bash script that runs on session start. Reads `skills/using-superproxmox/SKILL.m
 - [x] 45 tests total, all passing
 - [x] README EN + RU with badges, examples, disclaimers
 - [x] GitHub release (https://github.com/ROYTER228/SuperProxmox)
-- [ ] npm publish (pending)
-- [ ] Claude Code marketplace (pending)
+- [x] ~~npm publish~~ — skipped (npm requires 2FA for publishing)
+- [x] ~~Claude Code marketplace~~ — skipped
 
 ### Phase 8 — Bundles (BONUS — not in original plan)
 - [x] 10 ready-to-deploy templates
