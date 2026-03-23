@@ -1,0 +1,24 @@
+{
+  "name": "AdGuard Home DNS",
+  "description": "Network-wide ad blocker and DNS server. Set as DNS on your router to block ads on all devices.",
+  "type": "lxc",
+  "config": {
+    "hostname": "adguard",
+    "ostemplate": "local:vztmpl/debian-12-standard_12.12-1_amd64.tar.zst",
+    "memory": 256,
+    "swap": 128,
+    "cores": 1,
+    "storage": "local-lvm",
+    "rootfsSize": 2,
+    "unprivileged": true,
+    "nesting": true,
+    "nameserver": "8.8.8.8"
+  },
+  "post_create": {
+    "commands": [
+      "apt-get update && apt-get install -y curl",
+      "curl -s -S -L https://raw.githubusercontent.com/AdguardTeam/AdGuardHome/master/scripts/install.sh | sh -s -- -v"
+    ],
+    "notes": "Setup wizard at http://CONTAINER_IP:3000. After setup, set this container's IP as DNS on your router."
+  }
+}

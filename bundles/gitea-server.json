@@ -1,0 +1,31 @@
+{
+  "name": "Gitea Git Server",
+  "description": "Lightweight self-hosted Git server with web UI, issues, pull requests, and CI (Gitea Actions). SQLite database, minimal resources.",
+  "type": "lxc",
+  "config": {
+    "hostname": "gitea",
+    "ostemplate": "local:vztmpl/debian-12-standard_12.12-1_amd64.tar.zst",
+    "memory": 1024,
+    "swap": 512,
+    "cores": 1,
+    "storage": "local-lvm",
+    "rootfsSize": 20,
+    "unprivileged": true,
+    "nesting": true,
+    "nameserver": "8.8.8.8"
+  },
+  "post_create": {
+    "commands": [
+      "apt-get update && apt-get install -y git wget sqlite3",
+      "adduser --system --shell /bin/bash --gecos 'Gitea' --group --disabled-password --home /home/git git",
+      "mkdir -p /var/lib/gitea/{custom,data,log} /etc/gitea",
+      "chown -R git:git /var/lib/gitea /etc/gitea",
+      "chmod -R 750 /var/lib/gitea /etc/gitea",
+      "wget -O /usr/local/bin/gitea https://dl.gitea.com/gitea/1.25.5/gitea-1.25.5-linux-amd64",
+      "chmod +x /usr/local/bin/gitea",
+      "cat > /etc/systemd/system/gitea.service << 'EOF'\n[Unit]\nDescription=Gitea\nAfter=network.target\n[Service]\nType=simple\nUser=git\nGroup=git\nWorkingDirectory=/var/lib/gitea/\nExecStart=/usr/local/bin/gitea web --config /etc/gitea/app.ini\nRestart=always\nEnvironment=USER=git HOME=/home/git GITEA_WORK_DIR=/var/lib/gitea\n[Install]\nWantedBy=multi-user.target\nEOF",
+      "systemctl daemon-reload && systemctl enable gitea && systemctl start gitea"
+    ],
+    "notes": "Gitea UI at http://CONTAINER_IP:3000. Complete setup wizard on first visit."
+  }
+}

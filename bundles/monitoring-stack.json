@@ -1,0 +1,35 @@
+{
+  "name": "Monitoring Stack",
+  "description": "Prometheus + Grafana monitoring stack. Pre-configured dashboards for Proxmox, Docker, and system metrics.",
+  "type": "lxc",
+  "config": {
+    "hostname": "monitoring",
+    "ostemplate": "local:vztmpl/debian-12-standard_12.12-1_amd64.tar.zst",
+    "memory": 2048,
+    "swap": 512,
+    "cores": 2,
+    "storage": "local-lvm",
+    "rootfsSize": 20,
+    "unprivileged": false,
+    "nesting": true,
+    "nameserver": "8.8.8.8"
+  },
+  "post_create": {
+    "lxc_config": [
+      "lxc.apparmor.profile: unconfined",
+      "lxc.cgroup2.devices.allow: a",
+      "lxc.cap.drop: ",
+      "lxc.mount.auto: proc:rw sys:rw"
+    ],
+    "commands": [
+      "apt-get update && apt-get install -y curl ca-certificates gnupg",
+      "install -m 0755 -d /etc/apt/keyrings",
+      "curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg",
+      "echo 'deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian bookworm stable' > /etc/apt/sources.list.d/docker.list",
+      "apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin",
+      "mkdir -p /opt/monitoring && cat > /opt/monitoring/docker-compose.yml << 'EOF'\nservices:\n  prometheus:\n    image: prom/prometheus:latest\n    restart: always\n    ports:\n      - '9090:9090'\n    volumes:\n      - ./prometheus:/etc/prometheus\n      - prometheus_data:/prometheus\n  grafana:\n    image: grafana/grafana:latest\n    restart: always\n    ports:\n      - '3000:3000'\n    volumes:\n      - grafana_data:/var/lib/grafana\n    environment:\n      GF_SECURITY_ADMIN_PASSWORD: 'changeme'\nvolumes:\n  prometheus_data:\n  grafana_data:\nEOF",
+      "cd /opt/monitoring && docker compose up -d"
+    ],
+    "notes": "Grafana at http://CONTAINER_IP:3000 (admin/changeme). Prometheus at http://CONTAINER_IP:9090."
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "name": "Nginx Proxy Manager",
+  "description": "Reverse proxy with web UI and automatic Let's Encrypt SSL. Route traffic to your services with pretty URLs.",
+  "type": "lxc",
+  "config": {
+    "hostname": "nginx-proxy",
+    "ostemplate": "local:vztmpl/debian-12-standard_12.12-1_amd64.tar.zst",
+    "memory": 512,
+    "swap": 256,
+    "cores": 1,
+    "storage": "local-lvm",
+    "rootfsSize": 4,
+    "unprivileged": false,
+    "nesting": true,
+    "nameserver": "8.8.8.8"
+  },
+  "post_create": {
+    "lxc_config": [
+      "lxc.apparmor.profile: unconfined",
+      "lxc.cgroup2.devices.allow: a",
+      "lxc.cap.drop: ",
+      "lxc.mount.auto: proc:rw sys:rw"
+    ],
+    "commands": [
+      "apt-get update && apt-get install -y curl ca-certificates gnupg",
+      "install -m 0755 -d /etc/apt/keyrings",
+      "curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg",
+      "echo 'deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian bookworm stable' > /etc/apt/sources.list.d/docker.list",
+      "apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin",
+      "mkdir -p /opt/npm && cat > /opt/npm/docker-compose.yml << 'EOF'\nservices:\n  npm:\n    image: jc21/nginx-proxy-manager:latest\n    restart: always\n    ports:\n      - '80:80'\n      - '443:443'\n      - '81:81'\n    volumes:\n      - ./data:/data\n      - ./letsencrypt:/etc/letsencrypt\nEOF",
+      "cd /opt/npm && docker compose up -d"
+    ],
+    "notes": "Admin UI at http://CONTAINER_IP:81. Default login: admin@example.com / changeme"
+  }
+}

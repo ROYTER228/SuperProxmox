@@ -1,0 +1,25 @@
+{
+  "name": "Ubuntu Server (Cloud-Init)",
+  "description": "Ubuntu Server VM with cloud-init pre-configured. Boots with SSH access, user account, and static IP — no manual installation needed.",
+  "type": "vm",
+  "config": {
+    "name": "ubuntu",
+    "memory": 4096,
+    "cores": 2,
+    "sockets": 1,
+    "cpu": "host",
+    "ostype": "l26",
+    "bios": "seabios",
+    "scsihw": "virtio-scsi-single",
+    "storage": "local-lvm",
+    "diskSize": 32,
+    "bridge": "vmbr0"
+  },
+  "cloud_init": {
+    "ciuser": "ubuntu",
+    "cipassword": "changeme",
+    "ipconfig0": "ip=dhcp",
+    "nameserver": "8.8.8.8",
+    "notes": "Download cloud image: wget https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img && qm importdisk VMID noble-server-cloudimg-amd64.img local-lvm"
+  }
+}

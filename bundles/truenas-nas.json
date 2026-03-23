@@ -1,0 +1,26 @@
+{
+  "name": "TrueNAS SCALE NAS",
+  "description": "Full NAS with ZFS, SMB/NFS shares, Docker apps. Requires TrueNAS ISO and a separate data disk for ZFS pool.",
+  "type": "vm",
+  "config": {
+    "name": "truenas",
+    "memory": 8192,
+    "cores": 2,
+    "sockets": 1,
+    "cpu": "host",
+    "ostype": "l26",
+    "bios": "ovmf",
+    "machine": "q35",
+    "scsihw": "virtio-scsi-single",
+    "storage": "local-lvm",
+    "diskSize": 32,
+    "bridge": "vmbr0",
+    "iso": "local:iso/TrueNAS-SCALE-25.04.2.1.iso"
+  },
+  "post_create": {
+    "additional_disks": [
+      { "storage": "HDD1", "size": "512G", "description": "ZFS data pool" }
+    ],
+    "notes": "1. Install via VNC console. 2. Choose boot disk (32GB). 3. After install: remove ISO, set boot order to disk. 4. Create ZFS pool on data disk. 5. Set static IP."
+  }
+}

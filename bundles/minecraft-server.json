@@ -1,0 +1,35 @@
+{
+  "name": "Minecraft Java Server",
+  "description": "Minecraft Java Edition server using Docker. Supports Paper/Spigot/Vanilla with auto-updates and RCON.",
+  "type": "lxc",
+  "config": {
+    "hostname": "minecraft",
+    "ostemplate": "local:vztmpl/debian-12-standard_12.12-1_amd64.tar.zst",
+    "memory": 4096,
+    "swap": 1024,
+    "cores": 2,
+    "storage": "local-lvm",
+    "rootfsSize": 20,
+    "unprivileged": false,
+    "nesting": true,
+    "nameserver": "8.8.8.8"
+  },
+  "post_create": {
+    "lxc_config": [
+      "lxc.apparmor.profile: unconfined",
+      "lxc.cgroup2.devices.allow: a",
+      "lxc.cap.drop: ",
+      "lxc.mount.auto: proc:rw sys:rw"
+    ],
+    "commands": [
+      "apt-get update && apt-get install -y curl ca-certificates gnupg",
+      "install -m 0755 -d /etc/apt/keyrings",
+      "curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg",
+      "echo 'deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian bookworm stable' > /etc/apt/sources.list.d/docker.list",
+      "apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin",
+      "mkdir -p /opt/minecraft && cat > /opt/minecraft/docker-compose.yml << 'EOF'\nservices:\n  mc:\n    image: itzg/minecraft-server\n    restart: always\n    ports:\n      - '25565:25565'\n    environment:\n      EULA: 'TRUE'\n      TYPE: 'PAPER'\n      MEMORY: '3G'\n      ENABLE_RCON: 'true'\n      RCON_PASSWORD: 'changeme'\n    volumes:\n      - ./data:/data\nEOF",
+      "cd /opt/minecraft && docker compose up -d"
+    ],
+    "notes": "Server on port 25565. RCON on port 25575 (password: changeme). Change RCON password!"
+  }
+}

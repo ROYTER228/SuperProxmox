@@ -1,0 +1,32 @@
+{
+  "name": "Tailscale VPN Gateway",
+  "description": "LXC container running Tailscale as a subnet router. Provides remote access to your entire LAN via Tailscale mesh network.",
+  "type": "lxc",
+  "config": {
+    "hostname": "tailscale",
+    "ostemplate": "local:vztmpl/debian-12-standard_12.12-1_amd64.tar.zst",
+    "memory": 512,
+    "swap": 256,
+    "cores": 1,
+    "storage": "local-lvm",
+    "rootfsSize": 4,
+    "unprivileged": false,
+    "nesting": true,
+    "nameserver": "8.8.8.8"
+  },
+  "post_create": {
+    "lxc_config": [
+      "lxc.cgroup2.devices.allow: c 10:200 rwm",
+      "lxc.mount.entry: /dev/net/tun dev/net/tun none bind,create=file"
+    ],
+    "commands": [
+      "apt-get update && apt-get install -y curl iptables",
+      "curl -fsSL https://tailscale.com/install.sh | sh",
+      "echo 'net.ipv4.ip_forward=1' > /etc/sysctl.d/99-tailscale.conf",
+      "echo 'net.ipv6.conf.all.forwarding=1' >> /etc/sysctl.d/99-tailscale.conf",
+      "sysctl -p /etc/sysctl.d/99-tailscale.conf",
+      "systemctl enable tailscaled"
+    ],
+    "notes": "After starting: run 'tailscale up --advertise-routes=YOUR_SUBNET/24 --accept-routes' and approve in Tailscale admin console."
+  }
+}

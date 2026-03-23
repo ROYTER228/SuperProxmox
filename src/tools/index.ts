@@ -14,8 +14,12 @@ import * as disks from "./disks.js";
 import * as ha from "./ha.js";
 import * as tasks from "./tasks.js";
 import * as pbs from "./pbs.js";
+import * as cloudinit from "./cloudinit.js";
+import * as agent from "./agent.js";
+import * as ceph from "./ceph.js";
+import * as sdn from "./sdn.js";
 
-const modules = [cluster, vm, container, storage, network, firewall, backup, users, monitoring, disks, ha, tasks, pbs];
+const modules = [cluster, vm, container, storage, network, firewall, backup, users, monitoring, disks, ha, tasks, pbs, cloudinit, agent, ceph, sdn];
 
 export function getAllTools(): ToolDefinition[] {
   return modules.flatMap((m) => m.tools);
