@@ -1,6 +1,6 @@
 ---
 name: security-hardening
-description: Use after provisioning VMs or containers, before exposing services, or when auditing infrastructure security. Enforces SSH key auth, firewall rules, port restrictions, and strong passwords. Prevents common security oversights in homelab and production Proxmox environments.
+description: Use when auditing security, after provisioning VMs or containers, before exposing services, or when auditing infrastructure security. Enforces SSH key auth, firewall rules, port restrictions, and strong passwords. Prevents common security oversights in homelab and production Proxmox environments.
 ---
 
 # Security Hardening
