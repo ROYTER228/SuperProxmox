@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# SuperProxmox session-start hook
+# Injects using-superproxmox skill on session start
+
+SCRIPT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+SKILL_FILE="$SCRIPT_DIR/skills/using-superproxmox/SKILL.md"
+
+if [ ! -f "$SKILL_FILE" ]; then
+  echo '{"systemMessage": "SuperProxmox: skill file not found at '"$SKILL_FILE"'"}'
+  exit 0
+fi
+
+SKILL_CONTENT=$(cat "$SKILL_FILE" | python3 -c 'import sys,json; print(json.dumps(sys.stdin.read()))' 2>/dev/null || cat "$SKILL_FILE" | sed 's/"/\\"/g; s/$/\\n/' | tr -d '\n')
+
+cat <<EOF
+{
+  "hookSpecificOutput": {
+    "hookEventName": "SessionStart",
+    "additionalContext": $SKILL_CONTENT
+  }
+}
+EOF
