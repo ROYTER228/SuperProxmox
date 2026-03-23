@@ -31,5 +31,10 @@
       "curl -sSL https://dokploy.com/install.sh | sh"
     ],
     "notes": "Dokploy UI available at http://CONTAINER_IP:3000. Create admin account on first visit."
+  },
+  "companion_mcp": {
+    "name": "Docker",
+    "mcp": "@modelcontextprotocol/server-docker",
+    "install": "claude mcp add docker -- npx @modelcontextprotocol/server-docker"
   }
 }

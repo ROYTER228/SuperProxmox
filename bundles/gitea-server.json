@@ -27,5 +27,10 @@
       "systemctl daemon-reload && systemctl enable gitea && systemctl start gitea"
     ],
     "notes": "Gitea UI at http://CONTAINER_IP:3000. Complete setup wizard on first visit."
+  },
+  "companion_mcp": {
+    "name": "Gitea",
+    "mcp": "gitea-mcp",
+    "install": "claude mcp add gitea -- gitea-mcp -t stdio --env GITEA_HOST=http://CONTAINER_IP:3000 --env GITEA_ACCESS_TOKEN=TOKEN"
   }
 }

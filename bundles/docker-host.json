@@ -30,5 +30,10 @@
       "apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin",
       "docker run --rm hello-world"
     ]
+  },
+  "companion_mcp": {
+    "name": "Docker",
+    "mcp": "@modelcontextprotocol/server-docker",
+    "install": "claude mcp add docker -- npx @modelcontextprotocol/server-docker"
   }
 }

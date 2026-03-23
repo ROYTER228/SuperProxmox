@@ -19,8 +19,17 @@
   },
   "post_create": {
     "additional_disks": [
-      { "storage": "HDD1", "size": "512G", "description": "ZFS data pool" }
+      {
+        "storage": "HDD1",
+        "size": "512G",
+        "description": "ZFS data pool"
+      }
     ],
     "notes": "1. Install via VNC console. 2. Choose boot disk (32GB). 3. After install: remove ISO, set boot order to disk. 4. Create ZFS pool on data disk. 5. Set static IP."
+  },
+  "companion_mcp": {
+    "name": "TrueNAS",
+    "mcp": "truenas-mcp",
+    "install": "claude mcp add truenas -- truenas-mcp --truenas-url VM_IP --api-key API_KEY"
   }
 }

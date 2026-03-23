@@ -31,5 +31,10 @@
       "cd /opt/monitoring && docker compose up -d"
     ],
     "notes": "Grafana at http://CONTAINER_IP:3000 (admin/changeme). Prometheus at http://CONTAINER_IP:9090."
+  },
+  "companion_mcp": {
+    "name": "Grafana",
+    "mcp": "@grafana/mcp-server-grafana",
+    "install": "claude mcp add grafana -- npx @grafana/mcp-server-grafana --env GRAFANA_URL=http://CONTAINER_IP:3000"
   }
 }
