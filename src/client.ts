@@ -204,11 +204,11 @@ export class ApiClient {
   }
 
   async post(path: string, data?: Record<string, unknown>): Promise<any> {
-    return this.request('post', path, { data } as any);
+    return this.request('post', path, data ? { data } : undefined);
   }
 
   async put(path: string, data?: Record<string, unknown>): Promise<any> {
-    return this.request('put', path, { data } as any);
+    return this.request('put', path, data ? { data } : undefined);
   }
 
   async del(path: string, params?: Record<string, unknown>): Promise<any> {
