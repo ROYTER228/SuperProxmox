@@ -151,7 +151,7 @@ export class ApiClient {
 
     for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
       try {
-        const res = await this.api[method](path, config);
+        const res = await this.api.request({ method, url: path, ...config });
         return res.data.data;
       } catch (error) {
         const axiosErr = error as AxiosError;
