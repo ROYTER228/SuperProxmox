@@ -1,6 +1,7 @@
 import type { PveClient } from "../client.js";
 import type { ToolDefinition } from "../types.js";
 import { json } from "../utils.js";
+import { formatContainerList } from "../format.js";
 
 export const tools: ToolDefinition[] = [
   { name: "pve_list_containers", description: "List all LXC containers", inputSchema: { type: "object", properties: { node: { type: "string", description: "Optional: filter by node" } } } },
@@ -44,10 +45,12 @@ export async function handle(client: PveClient, name: string, args: Record<strin
   const id = args.vmid as number;
 
   switch (name) {
-    case "pve_list_containers":
-      return args.node
-        ? json(await client.get(`/nodes/${n}/lxc`))
-        : json(await client.get("/cluster/resources", { type: "lxc" }));
+    case "pve_list_containers": {
+      const cts = args.node
+        ? await client.get(`/nodes/${n}/lxc`)
+        : await client.get("/cluster/resources", { type: "lxc" });
+      return formatContainerList(cts);
+    }
 
     case "pve_get_container_status":
       return json(await client.get(`/nodes/${n}/lxc/${id}/status/current`));

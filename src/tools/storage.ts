@@ -1,6 +1,7 @@
 import type { PveClient } from "../client.js";
 import type { ToolDefinition } from "../types.js";
 import { json } from "../utils.js";
+import { formatStorageList } from "../format.js";
 
 export const tools: ToolDefinition[] = [
   { name: "pve_list_storage", description: "List all storage pools", inputSchema: { type: "object", properties: { node: { type: "string", description: "Optional: filter by node" } } } },
@@ -17,8 +18,10 @@ export const tools: ToolDefinition[] = [
 
 export async function handle(client: PveClient, name: string, args: Record<string, unknown>): Promise<string> {
   switch (name) {
-    case "pve_list_storage":
-      return args.node ? json(await client.get(`/nodes/${args.node}/storage`)) : json(await client.get("/storage"));
+    case "pve_list_storage": {
+      const st = args.node ? await client.get(`/nodes/${args.node}/storage`) : await client.get("/storage");
+      return formatStorageList(st);
+    }
     case "pve_get_storage_content":
       return json(await client.get(`/nodes/${args.node}/storage/${args.storage}/content`, args.content ? { content: args.content } : undefined));
     case "pve_get_storage_status":

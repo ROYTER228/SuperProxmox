@@ -1,6 +1,7 @@
 import type { PveClient } from "../client.js";
 import type { ToolDefinition } from "../types.js";
 import { json } from "../utils.js";
+import { formatVmList } from "../format.js";
 
 const nodeVmid = {
   properties: { node: { type: "string", description: "Node name" }, vmid: { type: "number", description: "VM ID" } },
@@ -52,10 +53,12 @@ export async function handle(client: PveClient, name: string, args: Record<strin
   const id = args.vmid as number;
 
   switch (name) {
-    case "pve_list_vms":
-      return args.node
-        ? json(await client.get(`/nodes/${n}/qemu`))
-        : json(await client.get("/cluster/resources", { type: "vm" }));
+    case "pve_list_vms": {
+      const vms = args.node
+        ? await client.get(`/nodes/${n}/qemu`)
+        : await client.get("/cluster/resources", { type: "vm" });
+      return formatVmList(vms);
+    }
 
     case "pve_get_vm_status":
       return json(await client.get(`/nodes/${n}/qemu/${id}/status/current`));
