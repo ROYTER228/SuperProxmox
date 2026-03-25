@@ -18,8 +18,9 @@ import * as cloudinit from "./cloudinit.js";
 import * as agent from "./agent.js";
 import * as ceph from "./ceph.js";
 import * as sdn from "./sdn.js";
+import * as utility from "./utility.js";
 
-const modules = [cluster, vm, container, storage, network, firewall, backup, users, monitoring, disks, ha, tasks, pbs, cloudinit, agent, ceph, sdn];
+const modules = [cluster, vm, container, storage, network, firewall, backup, users, monitoring, disks, ha, tasks, pbs, cloudinit, agent, ceph, sdn, utility];
 
 export function getAllTools(): ToolDefinition[] {
   return modules.flatMap((m) => m.tools);

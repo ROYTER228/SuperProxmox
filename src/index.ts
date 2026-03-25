@@ -4,33 +4,32 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { SuperProxmoxClient } from "./client.js";
 import { getAllTools, handleTool } from "./tools/index.js";
+import { getMode, filterToolsByMode, checkPermission } from "./permissions.js";
 
 const client = SuperProxmoxClient.fromEnv();
+const mode = getMode();
 
 const server = new Server(
-  { name: "super-proxmox", version: "0.2.0" },
+  { name: "super-proxmox", version: "0.4.0" },
   { capabilities: { tools: {} } }
 );
 
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
-  tools: getAllTools(),
+  tools: filterToolsByMode(getAllTools(), mode),
 }));
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
   try {
-    // Route to correct client based on tool prefix
+    checkPermission(name, mode);
     const toolClient = name.startsWith("pbs_") ? client.pbs
       : name.startsWith("pdm_") ? client.pdm
       : client.pve;
-
     if (!toolClient) {
-      const service = name.startsWith("pbs_") ? "PBS (set PBS_URL)"
-        : name.startsWith("pdm_") ? "PDM (set PDM_URL)"
-        : "PVE (set PVE_URL)";
-      throw new Error(`${service} is not configured. Add env vars to connect.`);
+      const svc = name.startsWith("pbs_") ? "PBS (set PBS_URL)"
+        : name.startsWith("pdm_") ? "PDM (set PDM_URL)" : "PVE (set PVE_URL)";
+      throw new Error(`${svc} is not configured.`);
     }
-
     const result = await handleTool(toolClient, name, args as Record<string, unknown>);
     return { content: [{ type: "text", text: result }] };
   } catch (error: any) {
@@ -43,9 +42,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
 async function main() {
   const connected = await client.init();
-  console.error(`SuperProxmox MCP v0.2.0 — ${getAllTools().length} tools | Connected: ${connected.join(", ")}`);
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
+  const all = getAllTools(), visible = filterToolsByMode(all, mode);
+  console.error(`SuperProxmox v0.4.0 — ${visible.length}/${all.length} tools (mode: ${mode}) | ${connected.join(", ")}`);
+  await server.connect(new StdioServerTransport());
 }
 
 main().catch((e) => { console.error("Fatal:", e.message); process.exit(1); });
