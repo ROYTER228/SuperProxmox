@@ -447,6 +447,13 @@ Bash script that runs on session start. Reads `skills/using-superproxmox/SKILL.m
 - [x] truenas-nas, ubuntu-cloud, adguard-dns, nginx-proxy
 - [x] minecraft-server, monitoring-stack
 
+### Phase 9 — Polish (from canvrno/ProxmoxMCP analysis)
+- [ ] Rich formatted output — human-readable tables/colors instead of raw JSON
+- [ ] CPU temperature in node resources (thermal monitoring)
+- [ ] Zod/Pydantic-style input validation schemas for all tools
+- [ ] Companion MCP auto-suggestion after bundle deploy
+- [ ] CI/CD — GitHub Actions: build + test on every push
+
 ---
 
 ## Key Principles
